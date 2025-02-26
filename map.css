@@ -1,0 +1,122 @@
+html,
+body {
+    margin: 0;
+    padding: 5;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#map svg {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Define base colors for departures and arrivals */
+:root {
+    --color-departures: steelblue;
+    --color-arrivals: darkorange;
+}
+
+/* Use the custom property set on each circle to mix colors */
+#map svg circle {
+    /* The CSS variable --departure-ratio is set in JS; we use it here to mix colors.
+       The color-mix() function is used here in oklch mode. */
+    --color: color-mix(in oklch,
+            var(--color-departures) calc(100% * var(--departure-ratio)),
+            var(--color-arrivals));
+    fill: var(--color);
+}
+
+
+#tooltip {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10000;
+}
+
+header {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    padding: 1em;
+    background-color: #f8f8f8;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header label {
+    margin-left: auto;
+    text-align: right;
+}
+
+header label input[type="range"] {
+    display: block;
+    width: 200px;
+    /* Adjust width as needed */
+}
+
+header label time,
+header label em {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 0.3em;
+}
+
+
+.legend {
+    width: 100%;
+    display: flex;
+    gap: 1px;
+    margin-top: 1em;
+    padding: 0.5em 0;
+}
+
+.legend>div {
+    flex: 1;
+    padding: 0.5em 1em;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+}
+
+
+
+/* Use data attribute selectors for background colors */
+.legend>div[data-departure-ratio="1"] {
+    background-color: steelblue;
+    /* 100% departures */
+}
+
+.legend>div[data-departure-ratio="0.5"] {
+    background-color: purple;
+    /* Balanced */
+}
+
+.legend>div[data-departure-ratio="0"] {
+    background-color: darkorange;
+    /* 100% arrivals */
+}
